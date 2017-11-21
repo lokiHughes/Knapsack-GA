@@ -2,6 +2,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
+
+
 public class Population{
 	private Individual[] population;
 	private double populationFitness = -1;
@@ -23,7 +25,7 @@ public class Population{
 		return this.population;
 	}
 
-	public Individual getFitness(int offset){
+	public Individual getFittest(int offset){
 		Arrays.sort(this.population, new Comparator<Individual>(){
 			@Override
 			public int compare(Individual o1, Individual o2){
