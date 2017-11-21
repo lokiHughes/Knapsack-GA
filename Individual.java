@@ -1,6 +1,8 @@
 public class Individual{
 	private int[] chromosome;
 	private double fitness = -1;
+	private int weight = 0;
+	private int profit  = 0;
 
 	public Individual(int[] chromosome){
 		//create individual chromosome

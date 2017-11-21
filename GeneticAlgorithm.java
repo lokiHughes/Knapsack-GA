@@ -1,14 +1,20 @@
+import java.util.ArrayList;
+
 public class GeneticAlgorithm{
 	private int populationSize;
 	private double mutationRate;
 	private double crossoverRate;
 	private int elitismCount;
+	private Items items;
+	private int maxWeight;
 
-	public GeneticAlgorithm(int populationSize, double mutationRate, double crossoverRate, int elitismCount){
+	public GeneticAlgorithm(int populationSize, double mutationRate, double crossoverRate, int elitismCount, Items items, int maxWeight){
 		this.populationSize = populationSize;
 		this.mutationRate = mutationRate;
 		this.crossoverRate = crossoverRate;
 		this.elitismCount = elitismCount;
+		this.items = items;
+		this.maxWeight = maxWeight;
 	}
 
 	public Population initPopulation(int chromosomeLength){
@@ -16,35 +22,33 @@ public class GeneticAlgorithm{
 		return population;
 	}
 
-	public double calcFitness(Individual individual){
-		// for tracking correct genes
-		int correctGenes = 0;
 
-		for (int geneIndex = 0; geneIndex < individual.getChromosomeLength(); geneIndex ++){
-			if (individual.getGene(geneIndex) == 1){
-				correctGenes +=1;
+	public void calcFitness(Individual individual){
+
+		int profit = 0;
+		int weight = 0;
+
+
+		for( int geneIndex = 0; geneIndex < individual.getChromosomeLength(); geneIndex ++){
+
+			profit += items.getItem(geneIndex).getProfit();
+			weight += items.getItem(geneIndex).getWeight();
+
+			if(weight > this.maxWeight){
+				profit = -1;
 			}
 		}
 
-		//calculate fitness
-		double fitness = (double) correctGenes / individual.getChromosomeLength();
-
-		//store fitness 
-		individual.setFitness(fitness);
-
-		return fitness;
-
+		individual.setFitness(profit);
 
 	}
 
 	public void evalPopulation(Population population){
-		double populationFitness = 0;
 
 		for(Individual individual: population.getIndividuals()){
-			populationFitness += calcFitness(individual);
+			calcFitness(individual);
 		}
 
-		population.setPopulationFitness(populationFitness);
 	}
 
 	public boolean isTerminationConditionMet(Population population){
