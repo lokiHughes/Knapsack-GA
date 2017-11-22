@@ -23,7 +23,7 @@ public class GeneticAlgorithm{
 	}
 
 
-	public void calcFitness(Individual individual){
+	public int calcFitness(Individual individual){
 
 		int profit = 0;
 		int weight = 0;
@@ -31,23 +31,35 @@ public class GeneticAlgorithm{
 
 		for( int geneIndex = 0; geneIndex < individual.getChromosomeLength(); geneIndex ++){
 
-			profit += items.getItem(geneIndex).getProfit();
-			weight += items.getItem(geneIndex).getWeight();
+			if(individual.getGene(geneIndex) == 1){
 
-			if(weight > this.maxWeight){
-				profit = -1;
+				profit += items.getItem(geneIndex).getProfit();
+				weight += items.getItem(geneIndex).getWeight();
 			}
+		}
+		
+		if(weight > this.maxWeight){
+				profit = -1;
 		}
 
 		individual.setFitness(profit);
 
+		return profit;
+
+
 	}
+
+	
 
 	public void evalPopulation(Population population){
 
+		double populationFitness = 0;
+
 		for(Individual individual: population.getIndividuals()){
-			calcFitness(individual);
+			populationFitness += calcFitness(individual);
 		}
+
+		population.setPopulationFitness(populationFitness);
 
 	}
 

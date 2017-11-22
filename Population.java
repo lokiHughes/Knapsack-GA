@@ -15,10 +15,22 @@ public class Population{
 	public Population(int populationSize, int chromosomeLength){
 		this.population = new Individual[populationSize];
 
-		for (int individualCount = 0; individualCount < populationSize; individualCount ++){
+		for (int individualCount = 0; individualCount < populationSize -2; individualCount ++){
 			Individual individual = new Individual(chromosomeLength);
 			this.population[individualCount] = individual;
 		}
+
+		Individual allZeros = new Individual(chromosomeLength);
+		Individual allOnes = new Individual(chromosomeLength);
+
+		for(int chromosomeIndex = 0; chromosomeIndex < chromosomeLength; chromosomeIndex ++){
+			allOnes.setGene(chromosomeIndex, 1);
+			allZeros.setGene(chromosomeIndex, 0);
+		}
+
+		population[populationSize -1] = allZeros;
+		population[populationSize -2] = allOnes;
+
 	}
 
 	public Individual[] getIndividuals(){
